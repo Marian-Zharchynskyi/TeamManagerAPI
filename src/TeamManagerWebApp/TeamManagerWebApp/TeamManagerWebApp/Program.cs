@@ -9,6 +9,13 @@ namespace TeamManagerWebApp
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var connectionString = builder.Configuration.GetConnectionString("ProjectConnection") ?? throw new InvalidOperationException("Connection string 'ProjectConnection' not found.");
+            builder.Services.AddDbContext<ProjectContext>(options =>
+                options.UseLazyLoadingProxies().UseSqlServer(connectionString));
+            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+            builder.Services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents()
