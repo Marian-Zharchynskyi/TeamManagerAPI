@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using TeamManagerWeb.Core.Context;
+using TeamManagerWeb.Repository.Common;
 using TeamManagerWebApp.Client.Pages;
 using TeamManagerWebApp.Components;
 
@@ -9,18 +12,24 @@ namespace TeamManagerWebApp
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var connectionString = builder.Configuration.GetConnectionString("ProjectConnection") ?? throw new InvalidOperationException("Connection string 'ProjectConnection' not found.");
+            builder.Services.AddRazorComponents()
+               .AddInteractiveServerComponents()
+               .AddInteractiveWebAssemblyComponents();
+
+            builder.Services.AddControllers();
+
+            builder.Services.AddScoped(http => new HttpClient
+            {
+                BaseAddress = new Uri(builder.Configuration.GetSection("BaseUri").Value!),
+            });
+
             builder.Services.AddDbContext<ProjectContext>(options =>
-                options.UseLazyLoadingProxies().UseSqlServer(connectionString));
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+            options.UseSqlServer(builder.Configuration.GetConnectionString("ProjectConnection")));
 
             builder.Services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
 
             // Add services to the container.
-            builder.Services.AddRazorComponents()
-                .AddInteractiveServerComponents()
-                .AddInteractiveWebAssemblyComponents();
-
+           
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -36,6 +45,8 @@ namespace TeamManagerWebApp
             }
 
             app.UseHttpsRedirection();
+
+            app.MapControllers();
 
             app.UseStaticFiles();
             app.UseAntiforgery();

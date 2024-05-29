@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamManagerWebApp", "TeamMa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamManagerWebApp.Client", "TeamManagerWebApp\TeamManagerWebApp.Client\TeamManagerWebApp.Client.csproj", "{D9A3135A-0993-420B-B478-79A7E539999C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamManagerWeb.Core", "TeamManagerWeb.Core\TeamManagerWeb.Core.csproj", "{09459951-0005-4B25-A79A-E15EB647FFAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamManagerWeb.Core", "TeamManagerWeb.Core\TeamManagerWeb.Core.csproj", "{09459951-0005-4B25-A79A-E15EB647FFAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamManagerWeb.Repository", "TeamManagerWeb.Repository\TeamManagerWeb.Repository.csproj", "{C3DD2F3E-72D5-480C-97DD-BC423D5E7740}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamManagerWeb.Repository", "TeamManagerWeb.Repository\TeamManagerWeb.Repository.csproj", "{C3DD2F3E-72D5-480C-97DD-BC423D5E7740}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

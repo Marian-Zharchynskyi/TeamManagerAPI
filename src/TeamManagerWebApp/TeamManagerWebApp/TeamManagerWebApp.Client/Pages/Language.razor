@@ -1,0 +1,62 @@
+﻿@page "/edit-language"
+@page "/edit-language/{id:int}"
+@using TeamManagerWeb.Repository.Common
+
+@inject IRepository<Language, int> LanguageRepository
+@inject NavigationManager NavigationManager
+@rendermode InteractiveWebAssembly
+
+@if (Id == null)
+{
+    <h3>Add New Language</h3>
+}
+else
+{
+    <h3>Edit @language.Name</h3>
+}
+<EditForm Model="language" OnSubmit="HandleSubmit">
+    <label>Name</label>
+    <InputText @bind-Value="language.Name" />
+    <button type="submit" class="btn btn-primary">Submit</button>
+    @if (Id != null)
+    {
+        <button @onclick="DeleteLanguage" type="button" class="btn btn-primary">Delete</button>
+    }
+</EditForm>
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    Language language { get; set; } = new Language { Name = string.Empty };
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id != null)
+        {
+            language = await LanguageRepository.GetAsync((int)Id);
+        }
+    }
+
+    async Task HandleSubmit()
+    {
+        if (Id == null)
+        {
+            await LanguageRepository.CreateAsync(language);
+        }
+        else
+        {
+            await LanguageRepository.UpdateAsync(language);
+        }
+        NavigationManager.NavigateTo("/languages");
+    }
+
+    async Task DeleteLanguage()
+    {
+        if (Id != null)
+        {
+            await LanguageRepository.DeleteAsync((int)Id);
+            NavigationManager.NavigateTo("/languages");
+        }
+    }
+}
