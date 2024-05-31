@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TeamManagerWeb.Core.Context;
 using TeamManagerWeb.Repository.Common;
-using TeamManagerWebApp.Client.Pages;
 using TeamManagerWebApp.Components;
 
 namespace TeamManagerWebApp

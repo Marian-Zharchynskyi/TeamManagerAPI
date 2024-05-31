@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\TeamManagerWebApp.Client\Pages\Language.razor.cs" Link="Language.razor.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\TeamManagerWeb.Repository\TeamManagerWeb.Repository.csproj" />
     <ProjectReference Include="..\TeamManagerWebApp.Client\TeamManagerWebApp.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.4" />

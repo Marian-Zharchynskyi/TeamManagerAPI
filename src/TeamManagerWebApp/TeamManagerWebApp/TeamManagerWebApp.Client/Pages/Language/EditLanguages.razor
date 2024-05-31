@@ -1,0 +1,63 @@
+﻿@page "/edit-language"
+@page "/edit-language/{id:guid}"
+@using TeamManagerWeb.Core.Entities
+@using TeamManagerWeb.Repository.Common
+@inject IRepository<Language, Guid> LanguageRepository
+@inject NavigationManager Navigation
+
+<h3>@(Id == null ? "Add New Language" : $"Edit {language.Name}")</h3>
+
+<EditForm Model="language" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <InputText id="name" class="form-control" @bind-Value="language.Name" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+    @if (Id != null)
+    {
+        <button @onclick="DeleteLanguage" type="button" class="btn btn-danger">Delete</button>
+    }
+</EditForm>
+
+@code {
+    [Parameter]
+    public Guid? Id { get; set; }
+
+    private Language language = new Language();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id != null)
+        {
+            language = await LanguageRepository.GetAsync(Id.Value);
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (Id == null)
+        {
+            await LanguageRepository.CreateAsync(language);
+        }
+        else
+        {
+            await LanguageRepository.UpdateAsync(language);
+        }
+        await LanguageRepository.SaveAsync();
+        Navigation.NavigateTo("/languages");
+    }
+
+    private async Task DeleteLanguage()
+    {
+        if (Id != null)
+        {
+            await LanguageRepository.DeleteAsync(Id.Value);
+            await LanguageRepository.SaveAsync();
+            Navigation.NavigateTo("/languages");
+        }
+    }
+}

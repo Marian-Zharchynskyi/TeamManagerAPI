@@ -1,0 +1,66 @@
+﻿@* @page "/languages" *@
+@using TeamManagerWeb.Core.Entities
+@using TeamManagerWeb.Repository.Common
+@inject IRepository<Language, Guid> LanguageRepository
+@inject NavigationManager Navigation
+
+<h3>Languages List</h3>
+
+@if (languages == null)
+{
+    <span>Loading...</span>
+}
+else if (!languages.Any())
+{
+    <span>No Languages found.</span>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var language in languages)
+            {
+                <tr>
+                    <td>@language.Name</td>
+                    <td>
+                        <button @onclick="() => EditLanguage(language.Id)" class="btn btn-primary">Edit</button>
+                        <button @onclick="() => DeleteLanguage(language.Id)" class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button @onclick="CreateLanguage" class="btn btn-success">Add New Language</button>
+}
+
+@code {
+    private List<Language> languages;
+
+    protected override async Task OnInitializedAsync()
+    {
+        languages = (await LanguageRepository.GetAllAsync()).ToList();
+    }
+
+    private void CreateLanguage()
+    {
+        Navigation.NavigateTo("/edit-language");
+    }
+
+    private void EditLanguage(Guid id)
+    {
+        Navigation.NavigateTo($"/edit-language/{id}");
+    }
+
+    private async Task DeleteLanguage(Guid id)
+    {
+        await LanguageRepository.DeleteAsync(id);
+        await LanguageRepository.SaveAsync();
+        languages = (await LanguageRepository.GetAllAsync()).ToList();
+    }
+}
