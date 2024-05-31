@@ -1,0 +1,52 @@
+﻿@page "/languages"
+@using TeamManagerWeb.Core.Entities
+@using TeamManagerWeb.Repository.Common
+@inject IRepository<Language, Guid> LanguageRepository
+@attribute [StreamRendering(true)]
+
+<h3>Language List</h3>
+<CreateLanguageBtn />
+
+@if (languages == null)
+{
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+}
+else if (languages.Count == 0)
+{
+    <div class="alert alert-warning" role="alert">
+        No languages found.
+    </div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Language Name</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var language in languages)
+            {
+                <tr>
+                    <td>@language.Name</td>
+                    <td>
+                        <EditLanguageBtn Id="language.Id" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<Language>? languages = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        languages = (await LanguageRepository.GetAllAsync()).ToList();
+    }
+}

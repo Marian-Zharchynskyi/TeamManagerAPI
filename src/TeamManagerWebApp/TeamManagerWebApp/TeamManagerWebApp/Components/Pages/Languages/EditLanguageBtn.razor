@@ -1,0 +1,13 @@
+﻿@inject NavigationManager NavigationManager
+
+<button class="btn btn-secondary" @onclick="EditLanguage">Edit</button>
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private void EditLanguage()
+    {
+        NavigationManager.NavigateTo($"/edit-language/{Id}");
+    }
+}

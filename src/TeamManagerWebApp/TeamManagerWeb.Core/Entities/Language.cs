@@ -2,9 +2,9 @@
 
 namespace TeamManagerWeb.Core.Entities
 {
-    public class Language 
+    public class Language : IEntity<Guid>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; }
 /*        public virtual ICollection<Game> Games { get; set; } = new HashSet<Game>();
 */    

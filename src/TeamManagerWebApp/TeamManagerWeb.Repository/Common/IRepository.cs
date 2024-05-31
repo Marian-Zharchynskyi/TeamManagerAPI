@@ -1,7 +1,9 @@
-﻿namespace TeamManagerWeb.Repository.Common
+﻿using TeamManagerWeb.Core.Entities;
+
+namespace TeamManagerWeb.Repository.Common
 {
     public interface IRepository<TEntity, TKey>
-        where TEntity : class
+        where TEntity : class, IEntity<TKey>
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<TEntity> GetAsync(TKey id);

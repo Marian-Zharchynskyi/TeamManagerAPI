@@ -6,9 +6,9 @@ using TeamManagerWeb.Repository.Common;
 [ApiController]
 public class LanguageController : ControllerBase
 {
-    private readonly IRepository<Language, int> _languageRepository;
+    private readonly IRepository<Language, Guid> _languageRepository;
 
-    public LanguageController(IRepository<Language, int> languageRepository)
+    public LanguageController(IRepository<Language, Guid> languageRepository)
     {
         _languageRepository = languageRepository;
     }
@@ -29,7 +29,7 @@ public class LanguageController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<Language>> EditLanguage(int id, Language language)
+    public async Task<ActionResult<Language>> EditLanguage(Guid id, Language language)
     {
         try
         {
@@ -52,7 +52,7 @@ public class LanguageController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<bool>> DeleteLanguage(int id)
+    public async Task<ActionResult<bool>> DeleteLanguage(Guid id)
     {
         try
         {
@@ -88,7 +88,7 @@ public class LanguageController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Language>> GetLanguageById(int id)
+    public async Task<ActionResult<Language>> GetLanguageById(Guid id)
     {
         try
         {

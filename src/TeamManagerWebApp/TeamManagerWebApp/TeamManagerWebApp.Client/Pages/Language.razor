@@ -1,8 +1,8 @@
 ﻿@page "/edit-language"
-@page "/edit-language/{id:int}"
+@page "/edit-language/{Id:Guid}"
+@using TeamManagerWeb.Core.Entities
 @using TeamManagerWeb.Repository.Common
-
-@inject IRepository<Language, int> LanguageRepository
+@inject IRepository<Language, Guid> Repository
 @inject NavigationManager NavigationManager
 @rendermode InteractiveWebAssembly
 
@@ -14,49 +14,54 @@ else
 {
     <h3>Edit @language.Name</h3>
 }
-<EditForm Model="language" OnSubmit="HandleSubmit">
-    <label>Name</label>
-    <InputText @bind-Value="language.Name" />
-    <button type="submit" class="btn btn-primary">Submit</button>
-    @if (Id != null)
-    {
-        <button @onclick="DeleteLanguage" type="button" class="btn btn-primary">Delete</button>
-    }
-</EditForm>
 
 @code {
     [Parameter]
-    public int? Id { get; set; }
+    public Guid? Id { get; set; }
 
-    Language language { get; set; } = new Language { Name = string.Empty };
+    private Language language = new Language();
 
     protected override async Task OnParametersSetAsync()
     {
         if (Id != null)
         {
-            language = await LanguageRepository.GetAsync((int)Id);
+            language = await Repository.GetAsync(Id.Value);
         }
     }
 
-    async Task HandleSubmit()
+    private async Task HandleSubmit()
     {
         if (Id == null)
         {
-            await LanguageRepository.CreateAsync(language);
+            await Repository.CreateAsync(language);
         }
         else
         {
-            await LanguageRepository.UpdateAsync(language);
+            await Repository.UpdateAsync(language);
         }
+        await Repository.SaveAsync();
         NavigationManager.NavigateTo("/languages");
     }
 
-    async Task DeleteLanguage()
+    private async Task DeleteLanguage()
     {
         if (Id != null)
         {
-            await LanguageRepository.DeleteAsync((int)Id);
+            await Repository.DeleteAsync(Id.Value);
+            await Repository.SaveAsync();
             NavigationManager.NavigateTo("/languages");
         }
     }
 }
+
+<EditForm Model="language" OnSubmit="HandleSubmit">
+    <label>Name</label>
+    <InputText @bind-Value="language.Name" class="form-control" />
+    <button type="submit" class="btn btn-primary">Submit</button>
+    @if (Id != null)
+    {
+        <button @onclick="DeleteLanguage" type="button" class="btn btn-danger">Delete</button>
+    }
+</EditForm>
+
+

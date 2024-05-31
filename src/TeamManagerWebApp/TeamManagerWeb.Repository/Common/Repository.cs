@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TeamManagerWeb.Core.Context;
+using TeamManagerWeb.Core.Entities;
 
 namespace TeamManagerWeb.Repository.Common
 {
     public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
-        where TEntity : class
+       where TEntity : class, IEntity<TKey>
     {
         private readonly ProjectContext _context;
 
